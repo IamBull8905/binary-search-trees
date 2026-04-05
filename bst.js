@@ -6,3 +6,8 @@ class Node {
   }
 }
 
+class Tree {
+  constructor(arr) {
+    this.root = buildTree(arr);
+  }
+}
