@@ -48,6 +48,25 @@ class Tree {
     root.rightChild = this.#buildTree(arr.slice(mid + 1, end + 1));
     return root;
   }
+
+  includes(value) {
+    const rootNode = this.root;
+    let currentNode = rootNode;
+    while (currentNode !== null && currentNode.data !== value) {
+      if (value > currentNode.data) {
+        currentNode = currentNode.rightChild;
+      } else if (value < currentNode.data) {
+        currentNode = currentNode.leftChild;
+      } else {
+        console.error("A duplicate was found!");
+      }
+    }
+    if (currentNode === null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
