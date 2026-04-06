@@ -59,6 +59,7 @@ class Tree {
         currentNode = currentNode.leftChild;
       } else {
         console.error("A duplicate was found!");
+        return;
       }
     }
     if (currentNode === null) {
@@ -66,6 +67,32 @@ class Tree {
     } else {
       return true;
     }
+  }
+
+  insert(value) {
+    const newNode = new Node(value);
+    if (this.includes(value)) {
+      return;
+    }
+    const rootNode = this.root;
+    let currentNode = rootNode;
+    while (currentNode !== null) {
+      if (value > currentNode.data && currentNode.rightChild !== null) {
+        currentNode = currentNode.rightChild;
+      } else if (value < currentNode.data && currentNode.leftChild !== null) {
+        currentNode = currentNode.leftChild;
+      } else {
+        break;
+      }
+    }
+
+    if (value < currentNode.data) {
+      currentNode.leftChild = newNode;
+    } else {
+      currentNode.rightChild = newNode;
+    }
+
+    return rootNode;
   }
 }
 
