@@ -94,6 +94,67 @@ class Tree {
 
     return rootNode;
   }
+
+  #getSuccessor(currentNode) {
+    let parent = currentNode;
+    currentNode = currentNode.rightChild;
+    while (currentNode !== null && currentNode.leftChild !== null) {
+      currentNode = currentNode.leftChild;
+      parent = currentNode;
+    }
+    return { successor: currentNode, parent };
+  }
+
+  deleteItem(value) {
+    if (!this.includes(value)) {
+      return null;
+    }
+    const rootNode = this.root;
+    let currentNode = rootNode;
+    let parent = null;
+
+    while (currentNode.data !== value) {
+      parent = currentNode;
+      if (value > currentNode.data) {
+        currentNode = currentNode.rightChild;
+      } else if (value < currentNode.data) {
+        currentNode = currentNode.leftChild;
+      } else {
+        console.error("A duplicate was found!");
+        return;
+      }
+    }
+
+    if (currentNode.leftChild === null && currentNode.rightChild === null) {
+      if (parent.leftChild === currentNode) {
+        parent.leftChild = null;
+      } else {
+        parent.rightChild = null;
+      }
+    } else if (
+      (currentNode.leftChild === null && currentNode.rightChild !== null) ||
+      (currentNode.leftChild !== null && currentNode.rightChild === null)
+    ) {
+      const child = currentNode.leftChild
+        ? currentNode.leftChild
+        : currentNode.rightChild;
+      if (currentNode.data > parent.data) {
+        parent.rightChild = child;
+      } else {
+        parent.leftChild = child;
+      }
+    } else {
+      const { successor, parent: successorParent } = this.#getSuccessor(currentNode);
+      currentNode.data = successor.data;
+      const successorChild = successor.rightChild;
+      if (successorParent.leftChild === successor) {
+        successorParent.leftChild = successorChild;
+      } else {
+        successorParent.rightChild = successorChild;
+      }
+    }
+    return rootNode;
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
