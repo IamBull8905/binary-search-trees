@@ -171,7 +171,7 @@ class Tree {
       if (firstNode.rightChild !== null) {
         queue.push(firstNode.rightChild);
       }
-      callback(firstNode.value);
+      callback(firstNode);
     }
   }
 
@@ -310,24 +310,39 @@ class Tree {
 
   isBalanced() {
     const rootNode = this.root;
+    let leftHeight = null;
+    let rightHeight = null;
+
     const checkBalance = (node) => {
       if (!node) {
         return true;
       }
-      let leftHeight = this.height(node.leftChild.data);
-      let rightHeight = this.height(node.rightChild.data);
-      if (Math.abs(leftHeight - rightHeight) > 1) {return false};
+      if (!node.leftChild) {
+        leftHeight = 0;
+      } else {
+        leftHeight = this.height(node.leftChild.data);
+      }
+      if (!node.rightChild) {
+        rightHeight = 0;
+      } else {
+        rightHeight = this.height(node.rightChild.data);
+      }
+      if (Math.abs(leftHeight - rightHeight) > 1) {
+        return false;
+      }
       return checkBalance(node.leftChild) && checkBalance(node.rightChild);
-    }
+    };
     return checkBalance(rootNode);
   }
 
   rebalance() {
     const balancedArray = [];
     this.inOrderForEach((node) => balancedArray.push(node.data));
-    this.#buildTree(balancedArray);
+    this.root = this.#buildTree(balancedArray);
   }
 }
 
-const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(newTree.root);
+//const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+//prettyPrint(newTree.root);
+
+export { Tree };
