@@ -158,7 +158,7 @@ class Tree {
   }
 
   levelOrderForEach(callback) {
-    if (!callback) {
+    if (!callback || typeof callback !== "function") {
       throw new Error("A callback is required");
     }
     const queue = [];
@@ -173,6 +173,63 @@ class Tree {
       }
       callback(firstNode.value);
     }
+  }
+
+  inOrderForEach(callback) {
+    if (!callback || typeof callback !== "function") {
+      throw new Error("A callback is required");
+    }
+    function recursiveNesting(node) {
+      if (node === null) {
+        return;
+      }
+      if(node.leftChild) {
+        recursiveNesting(node.leftChild);
+      }
+      callback(node);
+      if (node.rightChild) {
+        recursiveNesting(node.rightChild);
+      }
+    }
+    recursiveNesting(this.root);
+  }
+
+  preOrderForEach(callback) {
+    if (!callback || typeof callback !== "function") {
+      throw new Error("A callback is required");
+    }
+    function recursiveNesting(node) {
+      if (node === null) {
+        return;
+      }
+      callback(node);
+      if (node.leftChild) {
+        recursiveNesting(node.leftChild);
+      }
+      if (node.rightChild) {
+        recursiveNesting(node.rightChild);
+      }
+    }
+    recursiveNesting(this.root);
+  }
+
+  postOrderForEach(callback) {
+    if (!callback || typeof callback !== "function") {
+      throw new Error("A callback is required");
+    }
+    function recursiveNesting(node) {
+      if (node === null) {
+        return;
+      }
+      if (node.leftChild) {
+        recursiveNesting(node.leftChild);
+      }
+      if (node.rightChild) {
+        recursiveNesting(node.rightChild);
+      }
+      callback(node);
+    }
+    recursiveNesting(this.root);
   }
 }
 
