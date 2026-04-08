@@ -183,7 +183,7 @@ class Tree {
       if (node === null) {
         return;
       }
-      if(node.leftChild) {
+      if (node.leftChild) {
         recursiveNesting(node.leftChild);
       }
       callback(node);
@@ -230,6 +230,38 @@ class Tree {
       callback(node);
     }
     recursiveNesting(this.root);
+  }
+
+  height(value) {
+    const rootNode = this.root;
+    function findNode(value) {
+      let currentNode = rootNode;
+      while (currentNode !== null && currentNode.data !== value) {
+        if (value > currentNode.data) {
+          currentNode = currentNode.rightChild;
+        } else if (value < currentNode.data) {
+          currentNode = currentNode.leftChild;
+        } else {
+          console.error("A duplicate was found!");
+          return;
+        }
+      }
+      return currentNode;
+    }
+    let startNode = findNode(value);
+    if (!startNode) {
+      throw new Error("No start node was specified");
+    }
+    if (startNode.leftChild === null && startNode.rightChild === null) {
+      return 0; // this was a leaf node so height of 0
+    }
+    function recursiveNesting(node) {
+      if (!node) return -1;
+      let leftHeight = recursiveNesting(node.leftChild);
+      let rightHeight = recursiveNesting(node.rightChild);
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
+    return recursiveNesting(startNode);
   }
 }
 
