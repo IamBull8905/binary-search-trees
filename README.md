@@ -1,1 +1,2 @@
 # binary-search-trees
+This is the tenth project of the Javascript track in The Odin Project and was focussed on binary search trees. It helped me to incorporate different breadth-first/depth-first traversal algorithms such as level order traversal, pre order traversal, in order traversal & post order traversal.
