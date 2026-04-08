@@ -305,6 +305,27 @@ class Tree {
       }
       depthCount += 1;
     }
+    return depthCount;
+  }
+
+  isBalanced() {
+    const rootNode = this.root;
+    const checkBalance = (node) => {
+      if (!node) {
+        return true;
+      }
+      let leftHeight = this.height(node.leftChild.data);
+      let rightHeight = this.height(node.rightChild.data);
+      if (Math.abs(leftHeight - rightHeight) > 1) {return false};
+      return checkBalance(node.leftChild) && checkBalance(node.rightChild);
+    }
+    return checkBalance(rootNode);
+  }
+
+  rebalance() {
+    const balancedArray = [];
+    this.inOrderForEach((node) => balancedArray.push(node.data));
+    this.#buildTree(balancedArray);
   }
 }
 
