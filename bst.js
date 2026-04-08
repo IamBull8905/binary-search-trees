@@ -263,6 +263,49 @@ class Tree {
     }
     return recursiveNesting(startNode);
   }
+
+  depth(value) {
+    const rootNode = this.root;
+    function findNode(value) {
+      let currentNode = rootNode;
+      while (currentNode !== null && currentNode.data !== value) {
+        if (value > currentNode.data) {
+          currentNode = currentNode.rightChild;
+        } else if (value < currentNode.data) {
+          currentNode = currentNode.leftChild;
+        } else {
+          console.error("A duplicate was found!");
+          return;
+        }
+      }
+      return currentNode;
+    }
+    let endNode = findNode(value);
+    if (!endNode) {
+      throw new Error("No end node was specified");
+    } else if (endNode === rootNode) {
+      return 0;
+    }
+    const queue = [];
+    queue.push(this.root);
+    let depthCount = 0;
+    while (queue.length !== 0) {
+      let nodesAtCurrentLevel = queue.length;
+      for (let i = 0; i < nodesAtCurrentLevel; i++) {
+        let firstNode = queue.shift();
+        if (firstNode === endNode) {
+          return depthCount;
+        }
+        if (firstNode.leftChild !== null) {
+          queue.push(firstNode.leftChild);
+        }
+        if (firstNode.rightChild !== null) {
+          queue.push(firstNode.rightChild);
+        }
+      }
+      depthCount += 1;
+    }
+  }
 }
 
 const newTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
