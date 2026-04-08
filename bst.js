@@ -144,7 +144,8 @@ class Tree {
         parent.leftChild = child;
       }
     } else {
-      const { successor, parent: successorParent } = this.#getSuccessor(currentNode);
+      const { successor, parent: successorParent } =
+        this.#getSuccessor(currentNode);
       currentNode.data = successor.data;
       const successorChild = successor.rightChild;
       if (successorParent.leftChild === successor) {
@@ -154,6 +155,24 @@ class Tree {
       }
     }
     return rootNode;
+  }
+
+  levelOrderForEach(callback) {
+    if (!callback) {
+      throw new Error("A callback is required");
+    }
+    const queue = [];
+    queue.push(this.root);
+    while (queue.length !== 0) {
+      let firstNode = queue.shift();
+      if (firstNode.leftChild !== null) {
+        queue.push(firstNode.leftChild);
+      }
+      if (firstNode.rightChild !== null) {
+        queue.push(firstNode.rightChild);
+      }
+      callback(firstNode.value);
+    }
   }
 }
 
